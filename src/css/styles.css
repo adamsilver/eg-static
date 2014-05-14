@@ -3,7 +3,7 @@
 }
 
 body {
-	background: url(../img/fivestar.png) no-repeat;
+	background-color: #eee;
 }
 
 @font-face {
@@ -14,4 +14,9 @@ body {
 	url('../fonts/takemeaway-121213-256.ttf?') format('truetype');
 	font-weight: normal;
 	font-style: normal;
+}
+
+.someItem {
+	background: url(../img/fivestar.png) no-repeat;
+	min-height: 300px;
 }
