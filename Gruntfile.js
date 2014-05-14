@@ -72,9 +72,9 @@ module.exports = function(grunt) {
 		},
 
 		useminPrepare: {
-			// we want the generated files to be output to 'build'
+			// we want the generated files to be output to 'dist'
 			options: { 
-				dest: 'dist',
+				dest: '<%= dist.public %>/',
 				staging: '<%= build %>'
 			},
 			html: '<%= dist.html %>/*.html'
