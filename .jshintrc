@@ -1,0 +1,10 @@
+{
+	"predef": [ "blah" ],
+	"evil": true,
+	"regexdash": true,
+	"browser": false,
+	"wsh": true,
+	"trailing": true,
+	"sub": true,
+	"newcap": false
+}
