@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function( grunt ){
 
 	grunt.initConfig({
 
@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 		},
 		src: {
 			root: 'src',
-			html: '<%= src.root%>/html',
+			html: '<%= src.root %>/html',
 			"public": '<%= src.root %>/public'
 		},
 
@@ -103,11 +103,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-rev' );
 	grunt.loadNpmTasks( 'grunt-usemin' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-
-	grunt.registerTask( 'test', 'test config', function(){
-
-		grunt.log.writeln( require( 'util' ).inspect( grunt.config.get( 'useminPrepare' ) ) );
-	} );
 
 	grunt.registerTask( 'default', [ 'clean:dist', 'copy', 'useminPrepare:html', 'concat', 'cssmin', 'uglify', 'rev', 'usemin', 'jshint' ] );
 
