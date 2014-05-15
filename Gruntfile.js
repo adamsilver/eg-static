@@ -1,35 +1,40 @@
 module.exports = function(grunt) {
 
 	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+
+		pkg: grunt.file.readJSON( 'package.json' ),
+
+		build: 'build',
+		dist: {
+			root: 'dist',
+			html: '<%= dist.root %>/html',
+			"public": '<%= dist.root %>/public'
+		},
+		src: {
+			root: 'src',
+			html: '<%= src.root%>/html',
+			"public": '<%= src.root %>/public'
+		},
 
 		clean: {
-			build: {src: 'build'}
+			dist: { src: '<%= dist.root %>' }
 		},
 
 		copy: {
 			html: {
 				files: [{
 					expand: true,
-					cwd: 'src/html',
+					cwd: '<%= src.html %>',
 					src: [ '**/*.html' ],
-					dest: 'build/html'
+					dest: '<%= dist.html %>'
 				}]
 			},
-			images: {
+			assets: {
 				files: [{
 					expand: true,
-					cwd: 'src/img',
-					src: [ '**/*.*' ],
-					dest: 'build/img'
-				}]
-			},
-			fonts: {
-				files: [{
-					expand: true,
-					cwd: 'src/fonts',
-					src: [ '**/*.*' ],
-					dest: 'build/fonts'
+					cwd: '<%= src.public %>',
+					src: [ '{img,font}/**/*' ],
+					dest: '<%= dist.public %>'
 				}]
 			}
 		},
@@ -51,33 +56,41 @@ module.exports = function(grunt) {
 			assets: {
 				files: [{
 					src: [
-						'build/img/**/*.*',
-						'build/fonts/**/*.*',
-						'build/js/**/*.js',
-						'build/css/**/*.css'
+						'<%= dist.public %>/img/**/*.*',
+						'<%= dist.public %>/font/**/*.*',
+						'<%= dist.public %>/js/**/*.js',
+						'<%= dist.public %>/css/**/*.css'
 					]
 				}]
 			}
 		},
 
-		useminPrepare: {
-			html: 'src/html/*.html',
+		cssmin: {
+			options: {
+				report: 'gzip'
+			}
+		},
 
-			// we want the generated files to be output to 'build'
-			options: { dest: 'build' }
+		useminPrepare: {
+			// we want the generated files to be output to 'dist'
+			options: { 
+				dest: '<%= dist.public %>/',
+				staging: '<%= build %>'
+			},
+			html: '<%= dist.html %>/*.html'
 		},
 
 		usemin: {
 			html: {
-				src: 'build/html/*.html'
+				src: '<%= dist.html %>/*.html'
 			},
 			css: {
-				src: 'build/css/*.css'
+				src: '<%= dist.public %>/css/*.css'
 			}
 		},
 
 		jshint: {
-			all: 'build/js/**/*.js',
+			all: '<%= dist.public %>/js/**/*.js',
 		}
 
 	});
@@ -91,6 +104,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks( 'grunt-usemin' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 
-	grunt.registerTask('default', ['clean:build', 'copy', 'useminPrepare:html', 'concat', 'rev', 'cssmin', 'usemin', 'jshint']);
+	grunt.registerTask( 'test', 'test config', function(){
+
+		grunt.log.writeln( require( 'util' ).inspect( grunt.config.get( 'useminPrepare' ) ) );
+	} );
+
+	grunt.registerTask( 'default', [ 'clean:dist', 'copy', 'useminPrepare:html', 'concat', 'cssmin', 'uglify', 'rev', 'usemin', 'jshint' ] );
 
 };
